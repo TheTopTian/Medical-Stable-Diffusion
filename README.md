@@ -4,7 +4,7 @@ In this project, we aim to using the latest published **Stable Diffusion** to ge
 
 ## Stable Diffusion
 
-Stable diffusion was the most popular open-source AI generating program in 2022. It decomposed the image formation process into a sequential application of denoising autoencoders, diffusion models achieve state-of-the-art synthesis results on image data and beyond. It is a latent text-to-image diffusion model. They trained a Latent Diffusion Model on 512\times512 images from a subset of the LAION-5B database. The basic idea behind using stable diffusion for image generation is to model an image as a random process that evolves over time. The process starts with a noisy image and the stable diffusion equation is used to evolve the image over time by adding noise to it. The stable diffusion equation used in image generation is a partial differential equation that describes how the image evolves over time. This equation incorporates a fractional Laplacian operator, which allows for long-range dependence in the image. The fractional Laplacian operator is a generalization of the standard Laplacian operator, which is used in traditional diffusion processes.
+Stable diffusion was the most popular open-source AI generating program in 2022. The basic idea behind using stable diffusion for image generation is to model an image as a random process that evolves over time. The process starts with a noisy image and the stable diffusion equation is used to evolve the image over time by adding noise to it. The stable diffusion equation used in image generation is a partial differential equation that describes how the image evolves over time. This equation incorporates a fractional Laplacian operator, which allows for long-range dependence in the image. The fractional Laplacian operator is a generalization of the standard Laplacian operator, which is used in traditional diffusion processes.
 
 As the image evolves over time, it gradually becomes less noisy and more coherent. By controlling the parameters of the stable diffusion equation, we can control the rate of diffusion and the amount of noise added at each step, allowing us to generate a wide variety of images with different textures and structures. Stable diffusion-based image generation has shown promising results in generating naturalistic and diverse images, and has potential applications in computer vision, graphics, and art. 
 
@@ -17,13 +17,13 @@ We chose **CheXpert** to keep training the stable diffusion. It is a large datas
 After combining the extracted features based on radiomics and the manual defined method, there were 126 features for one single case. Many of them actually didn’t have high relationship with the survival days, most of them were just noise in the final regression. We used the SpearmanR to show the relationship between the features and survival day. Set a threshold to choose the parameter and lower the outliers.
 
 <div style="display: inline-block;">
-    <img src="image1.jpg" alt="Image 1" width="400" height="auto"/>
+    <img src="images/(a) No Finding.jpg" alt="(a) No finding" width="300" height="auto"/>
 </div>
 <div style="display: inline-block;">
-    <img src="image2.jpg" alt="Image 2" width="400" height="auto"/>
+    <img src="images/(b) Cardiomegaly.jpg" alt="(b) Cardiomegaly" width="300" height="auto"/>
 </div>
 <div style="display: inline-block;">
-    <img src="image2.jpg" alt="Image 2" width="400" height="auto"/>
+    <img src="images/(c) Pleural Effusion.jpg" alt="(c) Pleural Effusion" width="300" height="auto"/>
 </div>
   
 ## Regression Method
