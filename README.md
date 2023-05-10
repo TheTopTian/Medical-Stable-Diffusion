@@ -16,7 +16,7 @@ We chose **CheXpert** to keep training the stable diffusion. It is a large datas
 
 After combining the extracted features based on radiomics and the manual defined method, there were 126 features for one single case. Many of them actually didn’t have high relationship with the survival days, most of them were just noise in the final regression. We used the SpearmanR to show the relationship between the features and survival day. Set a threshold to choose the parameter and lower the outliers.
 
-<div style="display: inline-block;">
+<div align="center">
     <img src="images/(a) No Finding.jpg" title="(a) No finding" width="250" height="auto"/>
     <img src="images/(b) Cardiomegaly.jpg" title="(b) Cardiomegaly" width="250" height="auto"/>
     <img src="images/(c) Pleural Effusion.jpg" title="(c) Pleural Effusion" width="250" height="auto"/>
