@@ -1,1 +1,2 @@
-# Medical-Stable-Diffusion
+# Medical Stable Diffusion
+
