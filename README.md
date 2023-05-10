@@ -20,7 +20,9 @@ After combining the extracted features based on radiomics and the manual defined
     <img src="images/(a) No Finding.jpg" alt="(a) No finding" title="(a) No finding" width="200" height="auto">
     <figcaption>(a) No Finding</figcaption>
     <img src="images/(b) Cardiomegaly.jpg" alt="(b) Cardiomegaly" title="(b) Cardiomegaly" width="200" height="auto">
+    <figcaption>(a) No Finding</figcaption>
     <img src="images/(c) Pleural Effusion.jpg" alt="(c) Pleural Effusion" title="(c) Pleural effusion" width="200" height="auto">
+    <figcaption>(a) No Finding</figcaption>
 </div>
   
 ## Regression Method
