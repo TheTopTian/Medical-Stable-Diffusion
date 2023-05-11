@@ -24,7 +24,7 @@ The first try with stable diffusion was end up with terrible results. It was a m
 
 The DreamBooth was developed by the Facebook, it was based on the Stable Diffusion but made some small differences. The normal stable diffusion searches for the optimal embeddings that can represent concept, hence, is limited by the expressiveness of the textual modality and constrained to the original output domain of the model. In contrast, DreamBooth fine-tune the model in order to embed the subject within the output domain of the model, enabling the generation of novel images of the subject while preserving key visual features that form its identity.
 
-## Main Differences between Stable Diffusion and DreamBooth inside the Code
+## Differences between Stable Diffusion and DreamBooth in Code
 
 ```python:
 # Stable Diffusion
