@@ -14,23 +14,35 @@ We chose **CheXpert** to keep training the stable diffusion. It is a large datas
 
 ## First Try with Normal Stable Diffusion
 
-After combining the extracted features based on radiomics and the manual defined method, there were 126 features for one single case. Many of them actually didn’t have high relationship with the survival days, most of them were just noise in the final regression. We used the SpearmanR to show the relationship between the features and survival day. Set a threshold to choose the parameter and lower the outliers.
-
-<div align="center">
-    <img src="images/(a) No Finding.jpg" alt="(a) No finding" title="(a) No finding" width="200" height="auto">
-    <figcaption>(a) No Finding</figcaption>
-    <img src="images/(b) Cardiomegaly.jpg" alt="(b) Cardiomegaly" title="(b) Cardiomegaly" width="200" height="auto">
-    <figcaption>(b) Cardiomegaly</figcaption>
-    <img src="images/(c) Pleural Effusion.jpg" alt="(c) Pleural Effusion" title="(c) Pleural effusion" width="200" height="auto">
-    <figcaption>(c) Pleural Effusion</figcaption>
-</div>
-  
-## Regression Method
-
-There are many papers have already proved that the simple machine learning regression methods like random forest or MLP have better performance compared with the deep learning methods. We do a comparison among all the normal regression methods and find that the pipeline which is combined with standard scaler and SGD regressor has the best performance among all of them.
+The first try with stable diffusion was end up with terrible results. It was a model pretrained with usual daily life images, so when I want to let it learn some new medical images, it doesn't work so good. What it can only do is to try to find a best token to describe my medical images. So the output images even look colorful. 
 
 <p align="center">
-  <img src="./images/Regression_Methods.png" alt="regression methods" title="regression methods" width="400" height="auto">
+  <img src="./images/Normal_stable_diffusion_result.png" alt="regression methods" width="500" height="auto">
+</p>
+  
+## Dreambooth
+
+The DreamBooth was developed by the Facebook, it was based on the Stable Diffusion but made some small differences. The normal stable diffusion searches for the optimal embeddings that can represent concept, hence, is limited by the expressiveness of the textual modality and constrained to the original output domain of the model. In contrast, DreamBooth fine-tune the model in order to embed the subject within the output domain of the model, enabling the generation of novel images of the subject while preserving key visual features that form its identity.
+
+Here is the main difference inside the code with the normal stable diffusion:
+
+```Python:
+# Move vae and Unet to device
+vae.to(accelerator.device)
+unet.to(accelerator.device)
+
+# Keep vae and Unet in eval model as we don't train these
+vae.eval()
+unet.eval()
+-------------------------
+for epoch in range(num_train_epochs):
+    text_encoder.train()
+    ...
+\end{lstlisting}
+```
+
+<p align="center">
+  <img src="./images/Different_diseases_2000_iterations.png" alt="Different_diseases_2000_iterations" >
 </p>
   
 ## Framework of Survival
