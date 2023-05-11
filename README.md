@@ -69,7 +69,7 @@ There are some lateral images mixed inside the dataset, if the model can tell th
 Also I tried the DreamBooth on the eye dataset as well, to tell the difference between **RG** and **NRG**, it also shows some promising result:
 
 <p align="center">
-  <img src="./RG_NRG.png" alt="RG & NRG" width="600" height="auto">
+  <img src="./images/RG_NRG.png" alt="RG & NRG" width="600" height="auto">
 </p>
 
 ## The comparison between AUC Results in Chest Dataset
