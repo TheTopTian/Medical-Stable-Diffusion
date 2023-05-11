@@ -26,7 +26,8 @@ The DreamBooth was developed by the Facebook, it was based on the Stable Diffusi
 
 Here is the main difference inside the code with the normal stable diffusion:
 
-```Python:
+```python:
+# Stable Diffusion
 # Move vae and Unet to device
 vae.to(accelerator.device)
 unet.to(accelerator.device)
@@ -38,9 +39,18 @@ unet.eval()
 for epoch in range(num_train_epochs):
     text_encoder.train()
     ...
-\end{lstlisting}
 ```
 
+```python:
+# DreamBooth
+# Move text_encoder and vae to gpu
+text_encoder.to(accelerator.device)
+vae.to(accelerator.device)
+-------------------------
+for epoch in range(num_train_epochs):
+    unet.train()
+    ...
+```
 <p align="center">
   <img src="./images/Different_diseases_2000_iterations.png" alt="Different_diseases_2000_iterations" >
 </p>
