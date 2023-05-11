@@ -17,14 +17,14 @@ We chose **CheXpert** to keep training the stable diffusion. It is a large datas
 The first try with stable diffusion was end up with terrible results. It was a model pretrained with usual daily life images, so when I want to let it learn some new medical images, it doesn't work so good. What it can only do is to try to find a best token to describe my medical images. So the output images even look colorful. 
 
 <p align="center">
-  <img src="./images/Normal_stable_diffusion_result.png" alt="regression methods" width="500" height="auto">
+  <img src="./images/Normal_stable_diffusion_result.png" alt="regression methods" width="600" height="auto">
 </p>
   
 ## Dreambooth
 
 The DreamBooth was developed by the Facebook, it was based on the Stable Diffusion but made some small differences. The normal stable diffusion searches for the optimal embeddings that can represent concept, hence, is limited by the expressiveness of the textual modality and constrained to the original output domain of the model. In contrast, DreamBooth fine-tune the model in order to embed the subject within the output domain of the model, enabling the generation of novel images of the subject while preserving key visual features that form its identity.
 
-Here is the main difference inside the code with the normal stable diffusion:
+## Main Differences between Stable Diffusion and DreamBooth inside the Code
 
 ```python:
 # Stable Diffusion
@@ -51,44 +51,35 @@ for epoch in range(num_train_epochs):
     unet.train()
     ...
 ```
+
+## Results of DreamBooth
+
+These are different diseases output with 2000 iterations training:
+
 <p align="center">
   <img src="./images/Different_diseases_2000_iterations.png" alt="Different_diseases_2000_iterations" >
 </p>
-  
-## Framework of Survival
 
-The whole framework of the survival prediction task looks like that:
+There are some lateral images mixed inside the dataset, if the model can tell the difference between lateral images and frontal images, then of course it has the ability to tell the difference from different diseases. And I find that the more iterations for training, the better result we will get. I do a comparison between **2000 iterations** and **20000 iterations** here:
 
 <p align="center">
-  <img src="./images/Framework.png" alt="framework" title="framework" width="700" height="auto">
+  <img src="./images/Different_iterations.png" alt="Different_iterations" width="600" height="auto">
 </p>
-  
-## Results
 
-We tried different threshold of the filter. It was clear that the threshold $>|0.10|$ showed the best result ($0.621$) among all of them. After filtering, the features of each case were reduced from 126 to 28 which also sped up the computation. The accuracy was far higher than another two related paper also extracted radiomic features in BraTS 2020.
+Also I tried the DreamBooth on the eye dataset as well, to tell the difference between **RG** and **NRG**, it also shows some promising result:
 
+<p align="center">
+  <img src="./RG_NRG.png" alt="RG & NRG" width="600" height="auto">
+</p>
 
-|**Different Thresholds**|**Accuracy**|**MSE**|**SpearmanR**|
-| --- | --- | --- | --- |
-|without|0.379|$1.079\times10^{10}$|0.335|
-|$>\|0.08\|$|0.586|$2.056\times10^8$|0.518|
-|$>\|0.10\|$|**0.621**|$3.641\times10^7$|0.502|
-|$>\|0.12\|$|0.517|$5.775\times10^7$|0.417|
-|$<-0.01$|0.552|$5.167\times10^7$|0.480|
-|$<-0.05$|0.379|$1.516\times10^8$|0.050|
-|$<-0.10$|0.586|$1.406\times10^5$|0.537|
+## The comparison between AUC Results in Chest Dataset
 
-We also tried to use different input of the images since there were 4 types of images in the training dataset. It was also shown that the input of $T_1$ image had better result of accuracy compared with other images.
+I used the Res-Net to train the classification. The accuracy of generated images were all higher compared with the original-images but the mean AUC was 10 percent lower. Only the disease Edema's AUC was higher. I tried different guidance scale, different training iterations and also replace the Cardiomegaly images in the generated images with the separated training one. Separate training and the changing of guidance scale didn't have some help. 
 
-|**Different Input Modalities**|**Accuracy**|**MSE**|**SpearmanR**|
-| --- | --- | --- | --- |
-|$T_1$|**0.621**|$3.641\times10^7$|0.502|
-|$T_{1ce}$|0.448|$2.977\times10^8$|0.433|
-|$T_2$|0.483|$1.118\times10^5$|0.233|
-|$T_{2Flair}$|0.345|$2.470\times10^5$|0.127|
-|Combination of 4 modalities|0.517|$7.183\times10^6$|0.494|
+Regenerated images do lose some details which will lower the performance in computer vision training.
 
-
-## Conclusion
-
-In the survival part, we achieved a promising accuracy ($0.621$). It was clear that the filter depended on the Spearman's Rank had an outstanding performance. The framework without the filter could only reach the accuracy of $0.379$ which was far lower. The reason why we always kept the negative part in the threshold was that the most import feature was age which showed $-0.419$ SpearmanR value with the survival days. And also due to some obvious common sense, such as tumor size and tumor surface area were all negatively correlated with survival time. According to the result, the accuracy with threshold $>|0.10|$ ($0.621$) was higher than the accuracy with threshold only $<-0.10$ ($0.586$), because some of features were also positively correlated with survival time like the tumor's distance and offset from the brain center. Setting the threshold is very important for a good result. It also needs researchers to have relevant medical knowledge of tumors and as we learn more medically about tumors, perhaps we can manually add more important parameters.
+|**AUC (Best)**|**Cardiomegaly**|**Edema**|**Consolidation**|**Atelectasis**|**Pleural Effusion**|
+| --- | --- | --- | --- | --- | --- |
+|Original images|0.737|0.8449|0.8021|0.7603|0.7967|
+|50000 iterations|0.6215|0.8754|0.5716|0.405(Lowest)|0.7435|
+|20000 iterations|0.6167|0.88|0.2762(Lowest)|0.2849(Lowest)|0.8169|
